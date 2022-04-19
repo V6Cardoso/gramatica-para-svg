@@ -6,7 +6,7 @@ n   ☞ Passos, etapas
 δ   ☞ Angulo em graus
 pX  ☞ Regras de produção
 
-Σ : F, f, +, -, [, ]
+Σ : F f + - [ ]
 
 F: desenha para frente
 f: vai para frente
