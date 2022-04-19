@@ -2,11 +2,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
+
+import javax.management.StringValueExp;
+
 import java.util.regex.Matcher;
+import java.math.*;
 
 public class Principal {
     public static void main(String[] args) throws Exception {
@@ -23,9 +28,10 @@ public class Principal {
         // obtém os valores da gramática contidas no arquivo txt
         int iterations = Integer.parseInt(lista.get(0).substring(3).strip());
         String axion = lista.get(1).substring(3).strip();
+        int girar = Integer.parseInt(lista.get(2).substring(3).strip());
 
         //considere o alfabeto Σ : F f + - [ ]
-        Pattern pattern = Pattern.compile("p\\d : *(F|f|\\+|-|\\[|\\]) *-> *([F|f|\\+|-|\\[|\\]]+)");
+        Pattern pattern = Pattern.compile("p\\d : *(F|f|\\+|-|\\[|\\]) *-> *([F|f|\\+|\\-|\\[|\\]]+)");
 
         //obtém as regras de produção e as insere em um mapa
         Map<String, String> rules = new HashMap<String, String>();
@@ -47,14 +53,71 @@ public class Principal {
             result.setLength(0);
             for (char c : currentString.toCharArray())
             {
-                result.append(rules.get(String.valueOf(c)));
+                if(rules.containsKey(String.valueOf(c)))
+                    result.append(rules.get(String.valueOf(c)));
             }
             System.out.println("n = " + i + ": " + result.toString());
         }
 
-        //TODO converte a string final em um código html
+        List<Double> x = new ArrayList<>();
+        List<Double> y = new ArrayList<>();
 
-        //TODO cria o arquivo html
+        // posição de início do desenho em porcentagem
+        x.add((double) 0);
+        y.add((double) 50);
+        //ângulo inicial em radiano
+        double angulo = 0;
+
+        // desenho se adequa ao tamanho da tela conforme a quantidade de passos
+        // padding = 100 - x1(inicio) - steps
+        double step = (float)100 / result.length();
+
+        // x2 é a posição inicial + (step * cos(angle))
+        // y2 é a posição inicial + (step * sen(angle))
+        x.add(x.get(x.size() - 1) + (step * Math.cos(angulo)));
+        y.add(y.get(y.size() - 1) + (step * Math.sin(angulo)));
+
+        List<String> linhas = new ArrayList<>();
+
+        //TODO converte a string final em um código html
+        for(char c : result.toString().toCharArray()){
+            if(c == 'F'){
+                StringBuilder linha = new StringBuilder();
+                linha.append("<line x1=\"");
+                //pega o penúltimo valor da lista
+                linha.append(x.get(x.size()-2));
+                linha.append("%\" y1=\"");
+                linha.append(y.get(y.size()-2));
+
+                //pega o último valor da lista
+                linha.append("%\" x2=\"");
+                linha.append(x.get(x.size()-1));
+                linha.append("%\" y2=\"");
+                linha.append(y.get(y.size()-1));
+                linha.append("%\"/>");
+
+
+                linhas.add(linha.toString());
+            }
+            if(c == 'F' || c == 'f'){
+                // remove ponto inicial
+                x.remove(x.get(x.size()-2));
+                y.remove(y.get(y.size()-2));
+                //adiciona novo ponto final
+                x.add(x.get(x.size() - 1) + (step * Math.cos(angulo)));
+                y.add(y.get(y.size() - 1) + (step * Math.sin(angulo)));
+            }
+            else if(c == '+'){
+                angulo = angulo + Math.toRadians(girar);
+            }
+            else if(c == '-'){
+                angulo = angulo - Math.toRadians(girar);
+            }
+        }
+
+
+        //cria o arquivo html
+        criaHtml(linhas);
         
     }
 
@@ -73,10 +136,10 @@ public class Principal {
         return true;
     }
 
-    public static void criaHtml(String[] conteudo) throws Exception{
+    public static void criaHtml(List<String> conteudo) throws Exception{
         Path path = Paths.get("svg.html");
         StringBuilder build = new StringBuilder();
-        build.append("<html><body><svg width=\"1920\" height=\"1080\" style=\"stroke:rgb(4, 205, 255);stroke-width:2\">");
+        build.append("<html><body><svg width=\"vw\" height=\"vh\" style=\"stroke:rgb(4, 205, 255);stroke-width:2\">");
         for(String s : conteudo){
             build.append(s);
         }

@@ -3,7 +3,7 @@ Gramática da linguagem:
 Σ   ☞ Alfabeto da linguagem
 n   ☞ Passos, etapas
 ω   ☞ Axioma, condição inicial
-δ   ☞ Angulo em graus
+δ   ☞ Angulo em graus (referência círculo trigonométrico)
 pX  ☞ Regras de produção
 
 Σ : F f + - [ ]
