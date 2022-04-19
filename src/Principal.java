@@ -51,6 +51,10 @@ public class Principal {
             }
             System.out.println("n = " + i + ": " + result.toString());
         }
+
+        //TODO converte a string final em um código html
+
+        //TODO cria o arquivo html
         
     }
 
@@ -67,5 +71,18 @@ public class Principal {
                 return false;
         }
         return true;
+    }
+
+    public static void criaHtml(String[] conteudo) throws Exception{
+        Path path = Paths.get("svg.html");
+        StringBuilder build = new StringBuilder();
+        build.append("<html><body><svg width=\"1920\" height=\"1080\" style=\"stroke:rgb(4, 205, 255);stroke-width:2\">");
+        for(String s : conteudo){
+            build.append(s);
+        }
+        build.append("</svg></body></html>");
+        byte[] bytes = build.toString().getBytes();
+
+        Files.write(path, bytes);
     }
 }
