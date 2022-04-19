@@ -55,6 +55,9 @@ public class Principal {
             {
                 if(rules.containsKey(String.valueOf(c)))
                     result.append(rules.get(String.valueOf(c)));
+                else{
+                    result.append(String.valueOf(c));
+                }
             }
             System.out.println("n = " + i + ": " + result.toString());
         }
@@ -107,11 +110,16 @@ public class Principal {
                 x.add(x.get(x.size() - 1) + (step * Math.cos(angulo)));
                 y.add(y.get(y.size() - 1) + (step * Math.sin(angulo)));
             }
-            else if(c == '+'){
-                angulo = angulo + Math.toRadians(girar);
-            }
-            else if(c == '-'){
-                angulo = angulo - Math.toRadians(girar);
+            else if(c == '+' || c == '-'){
+                if(c == '+')
+                    angulo = angulo - Math.toRadians(girar);
+                else if(c == '-')
+                    angulo = angulo + Math.toRadians(girar);
+
+                x.remove(x.get(x.size()-1));
+                y.remove(y.get(y.size()-1));
+                x.add(x.get(x.size() - 1) + (step * Math.cos(angulo)));
+                y.add(y.get(y.size() - 1) + (step * Math.sin(angulo)));
             }
         }
 
@@ -125,7 +133,7 @@ public class Principal {
         // padrão definido da gramática
         Pattern pattern = Pattern.compile("^(p\\d+|Σ|n|ω|δ)\\s:");
 
-        if(list.size() < 5)
+        if(list.size() < 4)
             return false;
 
         // checa cada linha do arquivo se bate com o padrão da gramática
