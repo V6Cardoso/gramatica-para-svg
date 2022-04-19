@@ -65,7 +65,7 @@ public class Principal {
         List<Double> x = new ArrayList<>();
         List<Double> y = new ArrayList<>();
 
-        // posição de início do desenho em porcentagem
+        // posição de início do desenho
         x.add((double) 0);
         y.add((double) 50);
         //ângulo inicial em radiano
@@ -74,6 +74,7 @@ public class Principal {
         // desenho se adequa ao tamanho da tela conforme a quantidade de passos
         // padding = 100 - x1(inicio) - steps
         double step = (float)100 / result.length();
+        //double step = 0.3;
 
         // x2 é a posição inicial + (step * cos(angle))
         // y2 é a posição inicial + (step * sen(angle))
@@ -82,7 +83,7 @@ public class Principal {
 
         List<String> linhas = new ArrayList<>();
 
-        //TODO converte a string final em um código html
+        //converte a string final em um código html
         for(char c : result.toString().toCharArray()){
             if(c == 'F'){
                 StringBuilder linha = new StringBuilder();
@@ -147,7 +148,7 @@ public class Principal {
     public static void criaHtml(List<String> conteudo) throws Exception{
         Path path = Paths.get("svg.html");
         StringBuilder build = new StringBuilder();
-        build.append("<html><body><svg width=\"vw\" height=\"vh\" style=\"stroke:rgb(4, 205, 255);stroke-width:2\">");
+        build.append("<html><body><svg viewBox=\"0 0 1000 1000\" preserveAspectRatio=\"xMidYMid meet\" style=\"stroke:rgb(4, 205, 255);stroke-width:2\">");
         for(String s : conteudo){
             build.append(s);
         }
