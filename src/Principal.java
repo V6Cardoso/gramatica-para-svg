@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.management.StringValueExp;
+import javax.swing.text.Position;
 
 import java.util.regex.Matcher;
 import java.math.*;
@@ -66,15 +67,15 @@ public class Principal {
         List<Double> y = new ArrayList<>();
 
         // posição de início do desenho
-        x.add((double) 0);
+        x.add((double) 40);
         y.add((double) 50);
         //ângulo inicial em radiano
         double angulo = 0;
 
         // desenho se adequa ao tamanho da tela conforme a quantidade de passos
         // padding = 100 - x1(inicio) - steps
-        double step = (float)100 / result.length();
-        //double step = 0.3;
+        //double step = (float)100 / result.length();
+        double step = 0.5;
 
         // x2 é a posição inicial + (step * cos(angle))
         // y2 é a posição inicial + (step * sen(angle))
@@ -148,11 +149,11 @@ public class Principal {
     public static void criaHtml(List<String> conteudo) throws Exception{
         Path path = Paths.get("svg.html");
         StringBuilder build = new StringBuilder();
-        build.append("<html><body><svg viewBox=\"0 0 1000 1000\" preserveAspectRatio=\"xMidYMid meet\" style=\"stroke:rgb(4, 205, 255);stroke-width:2\">");
+        build.append("<html><body style=\"background-color:gray;\"><div style=\"position: fixed; top: 0; z-index: 1000;\"><input type=\"range\" style=\" width: 500px\" min=\"100\" max=\"500\" value=\"100\" class=\"slider\" id=\"zoomRange\"><span id=\"zoomValue\">100%</span></div><svg id=\"svgZoom\" viewBox=\"0 0 3000 3000\" preserveAspectRatio=\"xMidYMid meet\" style=\"stroke:rgb(4, 205, 255);stroke-width:2\">");
         for(String s : conteudo){
             build.append(s);
         }
-        build.append("</svg></body></html>");
+        build.append("</svg></body><script>const slider = document.getElementById(\"zoomRange\");const svgZoom = document.getElementById(\"svgZoom\");const zoomValue = document.getElementById(\"zoomValue\");slider.oninput = function() {zoomValue.innerText = `${this.value}%`;svgZoom.style.transform = `scale(${this.value / 100})`;}</script></html>");
         byte[] bytes = build.toString().getBytes();
 
         Files.write(path, bytes);
