@@ -65,28 +65,27 @@ public class Principal {
 
         List<Double> x = new ArrayList<>();
         List<Double> y = new ArrayList<>();
+        List<Double> angulo = new ArrayList<>();
 
         // posição de início do desenho
         x.add((double) 40);
         y.add((double) 50);
         //ângulo inicial em radiano
-        double angulo = 0;
+        angulo.add(Math.toRadians(-60));
 
-        // desenho se adequa ao tamanho da tela conforme a quantidade de passos
-        // padding = 100 - x1(inicio) - steps
-        //double step = (float)100 / result.length();
+        // tamanho da linha
         double step = 0.5;
 
         // x2 é a posição inicial + (step * cos(angle))
         // y2 é a posição inicial + (step * sen(angle))
-        x.add(x.get(x.size() - 1) + (step * Math.cos(angulo)));
-        y.add(y.get(y.size() - 1) + (step * Math.sin(angulo)));
+        x.add(x.get(x.size() - 1) + (step * Math.cos(angulo.get(angulo.size() - 1))));
+        y.add(y.get(y.size() - 1) + (step * Math.sin(angulo.get(angulo.size() - 1))));
 
         List<String> linhas = new ArrayList<>();
 
         //converte a string final em um código html
         for(char c : result.toString().toCharArray()){
-            if(c == 'F'){
+            if(c == 'F' || c == 'f'){
                 StringBuilder linha = new StringBuilder();
                 linha.append("<line x1=\"");
                 //pega o penúltimo valor da lista
@@ -106,22 +105,43 @@ public class Principal {
             }
             if(c == 'F' || c == 'f'){
                 // remove ponto inicial
-                x.remove(x.get(x.size()-2));
-                y.remove(y.get(y.size()-2));
+                x.remove(x.size()-2);
+                y.remove(y.size()-2);
                 //adiciona novo ponto final
-                x.add(x.get(x.size() - 1) + (step * Math.cos(angulo)));
-                y.add(y.get(y.size() - 1) + (step * Math.sin(angulo)));
+                x.add(x.get(x.size() - 1) + (step * Math.cos(angulo.get(angulo.size() - 1))));
+                y.add(y.get(y.size() - 1) + (step * Math.sin(angulo.get(angulo.size() - 1))));
             }
             else if(c == '+' || c == '-'){
                 if(c == '+')
-                    angulo = angulo - Math.toRadians(girar);
+                    angulo.add(angulo.get(angulo.size() - 1) - Math.toRadians(girar));
+                    
                 else if(c == '-')
-                    angulo = angulo + Math.toRadians(girar);
+                    angulo.add(angulo.get(angulo.size() - 1) + Math.toRadians(girar));
 
-                x.remove(x.get(x.size()-1));
-                y.remove(y.get(y.size()-1));
-                x.add(x.get(x.size() - 1) + (step * Math.cos(angulo)));
-                y.add(y.get(y.size() - 1) + (step * Math.sin(angulo)));
+                angulo.remove(angulo.size() - 2);
+                
+                x.remove(x.size()-1);
+                y.remove(y.size()-1);
+
+                x.add(x.get(x.size() - 1) + (step * Math.cos(angulo.get(angulo.size() - 1))));
+                y.add(y.get(y.size() - 1) + (step * Math.sin(angulo.get(angulo.size() - 1))));
+            }
+            else if(c == '[' || c == ']'){
+                if(c == '['){
+                    x.add(x.get(x.size() - 2));
+                    x.add(x.get(x.size() - 2));
+                    y.add(y.get(y.size() - 2));
+                    y.add(y.get(y.size() - 2));
+                    angulo.add(angulo.get(angulo.size() - 1));
+                }
+
+                if(c == ']'){
+                    x.remove(x.size() - 1);
+                    x.remove(x.size() - 1);
+                    y.remove(y.size() - 1);
+                    y.remove(y.size() - 1);
+                    angulo.remove(angulo.size() - 1);
+                }
             }
         }
 
