@@ -1,7 +1,8 @@
 # gramatica-para-svg
 EC6 Compiladores Desafio 4
 
-Gramática da linguagem:
+<br>
+<h3>Glosário da linguagem:</h3>
 
 
 Σ   ☞ Alfabeto da linguagem
@@ -15,8 +16,9 @@ n   ☞ Passos, etapas
 pX  ☞ Regras de produção
 
 
-Σ : F f + - [ ]
-
+--------------------------------------------
+<h3>Alfabeto aceito: F f + - [ ]</h3>
+<br>
 
 F: desenha para frente
 
@@ -31,7 +33,8 @@ f: vai para frente
 ]: pop posição
 
 
-Exemplo arquivo input.txt:
+--------------------------------------------
+<h3>Exemplo arquivo input.txt:</h3>
 
 n : 6
 
@@ -43,6 +46,7 @@ p1 : F -> F-f+F+f-F
 
 p2 : f -> ff
 
-Onde f minúsculo representa desenhar para frente e um ângulo inicial de -60 graus. Esse será o resultado:
+Onde f minúsculo representa desenhar para frente e um ângulo inicial de -60 graus.
+<h3>Resultado dessa entrada:</h3>
 <img width="788" alt="image" src="https://user-images.githubusercontent.com/59899335/165127246-20c1707b-2de8-49ae-8818-31f2b54797bc.png">
 
